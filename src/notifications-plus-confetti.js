@@ -2,14 +2,25 @@
 
 import { CompositeDisposable } from "atom";
 
-let disposables = new CompositeDisposable(); // TODO: init on activate
-let confetti = [];
-let notificationCount = document.querySelector(".notifications-count");
-let notificationCountNumber = null;
-
 export default {
 	activate() {
-		disposables.add(atom.packages.onDidActivatePackage((pkg) => {
+		this.disposables = new CompositeDisposable();
+		this.confetti = [];
+		this.notificationCount = null;
+		this.notificationCountNumber = null;
+		this.numberOfConfetti = 0;
+
+		this.addConfetti = this.addConfetti.bind(this);
+		this.removeConfetti = this.removeConfetti.bind(this);
+		this.animationstart = this.animationstart.bind(this);
+		this.animationend = this.animationend.bind(this);
+
+		this.disposables.add(atom.config.observe("notifications-plus-confetti.numberOfConfetti", value => {
+			this.numberOfConfetti = value;
+			this.addConfetti();
+		}));
+
+		this.disposables.add(atom.packages.onDidActivatePackage(pkg => {
 			if (pkg.name === "notifications-plus") {
 				this.addConfetti();
 			}
@@ -20,36 +31,43 @@ export default {
 	},
 
 	deactivate() {
-		confetti.forEach(i => i.remove());
-		confetti = [];
-		if (notificationCountNumber) {
-			notificationCountNumber.removeEventListener("animationstart", this.animationstart, false);
-			notificationCountNumber.removeEventListener("animationend", this.animationend, false);
+		this.removeConfetti();
+		this.disposables.dispose();
+		this.disposables = null;
+	},
+
+	removeConfetti() {
+		this.confetti.forEach(i => i.remove());
+		this.confetti = [];
+		if (this.notificationCountNumber) {
+			this.notificationCountNumber.removeEventListener("animationstart", this.animationstart, false);
+			this.notificationCountNumber.removeEventListener("animationend", this.animationend, false);
+			this.notificationCount = null;
+			this.notificationCountNumber = null;
 		}
-		disposables.dispose();
 	},
 
 	addConfetti() {
-		notificationCount = document.querySelector(".notifications-count");
-		if (notificationCount) {
-			const total = atom.config.get("notifications-plus-confetti.numberOfConfetti"); // TODO: reactive
-			notificationCountNumber = notificationCount.querySelector("div");
-			for (let i = 0; i < total; i++) {
+		this.removeConfetti();
+		this.notificationCount = document.querySelector(".notifications-count");
+		if (this.notificationCount) {
+			this.notificationCountNumber = this.notificationCount.querySelector("div");
+			for (let i = 0; i < this.numberOfConfetti; i++) {
 				const confetto = document.createElement("i");
-				confetto.dataset.left = (i < total / 2 ? "1" : "");
-				confetti.push(confetto);
-				notificationCount.appendChild(confetto);
+				confetto.dataset.left = (i < this.numberOfConfetti / 2 ? "1" : "");
+				this.confetti.push(confetto);
+				this.notificationCount.appendChild(confetto);
 			}
-			notificationCountNumber.addEventListener("animationstart", this.animationstart, false);
-			notificationCountNumber.addEventListener("animationend", this.animationend, false);
+			this.notificationCountNumber.addEventListener("animationstart", this.animationstart, false);
+			this.notificationCountNumber.addEventListener("animationend", this.animationend, false);
 		} else {
-			setTimeout(_ => { this.addConfetti(); }, 1000);
+			setTimeout(this.addConfetti, 1000);
 		}
 	},
 
-	animationstart(e) { // TODO: bind this
+	animationstart(e) {
 		if (e.animationName === "new-notification") {
-			confetti.forEach(confetto => {
+			this.confetti.forEach(confetto => {
 				const moveH = Math.random() * 90 + 10;
 				const moveV = Math.random() * 30 - 15;
 				const rotate = Math.random() * 720 - 360;
@@ -66,11 +84,11 @@ export default {
 		}
 	},
 
-	animationend(e) { // TODO: bind this
+	animationend(e) {
 		if (e.animationName === "new-notification") {
-			confetti.forEach(confetto => {
+			this.confetti.forEach(confetto => {
 				confetto.style = "";
 			});
 		}
 	},
-}
+};
