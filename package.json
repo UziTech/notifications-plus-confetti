@@ -1,7 +1,7 @@
 {
   "name": "notifications-plus-confetti",
   "main": "./src/notifications-plus-confetti.js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Notifications+ confetti on new notification",
   "repository": "https://github.com/UziTech/notifications-plus-confetti",
   "license": "MIT",
