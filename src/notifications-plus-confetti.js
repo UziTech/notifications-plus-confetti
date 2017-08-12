@@ -9,21 +9,17 @@ let notificationCountNumber = null;
 
 export default {
 	activate() {
-		console.debug("activate");
 		disposables.add(atom.packages.onDidActivatePackage((pkg) => {
 			if (pkg.name === "notifications-plus") {
-				console.debug("onDidActivatePackage");
 				this.addConfetti();
 			}
 		}));
 		if (atom.packages.getActivePackage("notifications-plus")) {
-			console.debug("already active");
 			this.addConfetti();
 		}
 	},
 
 	deactivate() {
-		console.debug("deactivate");
 		confetti.forEach(i => i.remove());
 		confetti = [];
 		if (notificationCountNumber) {
@@ -34,7 +30,6 @@ export default {
 	},
 
 	addConfetti() {
-		console.debug("addConfetti");
 		notificationCount = document.querySelector(".notifications-count");
 		if (notificationCount) {
 			const total = atom.config.get("notifications-plus-confetti.numberOfConfetti"); // TODO: reactive
@@ -52,9 +47,8 @@ export default {
 		}
 	},
 
-	animationstart(e) {// TODO: bind this
+	animationstart(e) { // TODO: bind this
 		if (e.animationName === "new-notification") {
-			console.debug("animationstart");
 			confetti.forEach(confetto => {
 				const moveH = Math.random() * 90 + 10;
 				const moveV = Math.random() * 30 - 15;
@@ -72,9 +66,8 @@ export default {
 		}
 	},
 
-	animationend(e) {// TODO: bind this
+	animationend(e) { // TODO: bind this
 		if (e.animationName === "new-notification") {
-			console.debug("animationend");
 			confetti.forEach(confetto => {
 				confetto.style = "";
 			});
