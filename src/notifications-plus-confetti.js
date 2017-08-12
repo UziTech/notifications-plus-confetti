@@ -17,7 +17,9 @@ export default {
 
 		this.disposables.add(atom.config.observe("notifications-plus-confetti.numberOfConfetti", value => {
 			this.numberOfConfetti = value;
-			this.addConfetti();
+			if (atom.packages.getActivePackage("notifications-plus")) {
+				this.addConfetti();
+			}
 		}));
 
 		this.disposables.add(atom.packages.onDidActivatePackage(pkg => {
@@ -25,6 +27,13 @@ export default {
 				this.addConfetti();
 			}
 		}));
+
+		this.disposables.add(atom.packages.onDidDeactivatePackage(pkg => {
+			if (pkg.name === "notifications-plus") {
+				this.removeConfetti();
+			}
+		}));
+
 		if (atom.packages.getActivePackage("notifications-plus")) {
 			this.addConfetti();
 		}
@@ -60,7 +69,7 @@ export default {
 			}
 			this.notificationCountNumber.addEventListener("animationstart", this.animationstart, false);
 			this.notificationCountNumber.addEventListener("animationend", this.animationend, false);
-		} else {
+		} else if (atom.packages.getActivePackage("notifications-plus")) {
 			setTimeout(this.addConfetti, 1000);
 		}
 	},
