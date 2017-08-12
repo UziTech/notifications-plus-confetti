@@ -1,0 +1,39 @@
+@import "ui-variables";
+
+// Notifications count confetti
+@keyframes new-notification-confetti {
+  from {
+    transform: translate3d(0,0,0) rotate(0);
+    opacity: 1;
+  }
+}
+.notifications-count {
+  position: relative;
+  i {
+    position: absolute;
+    display: none;
+    top: calc(50% ~"-" 3px);
+    width: 4px;
+    height: 6px;
+    background: @text-color;
+    opacity: 0;
+  }
+  .new-notification ~ i {
+    animation: new-notification-confetti 500ms ease-out;
+  }
+}
+.notifications-count[last-type='fatal'] i {
+	background: @background-color-error;
+}
+.notifications-count[last-type='error'] i {
+	background: @background-color-error;
+}
+.notifications-count[last-type='warning'] i {
+	background: @background-color-warning;
+}
+.notifications-count[last-type='info'] i {
+	background: @background-color-info;
+}
+.notifications-count[last-type='success'] i {
+	background: @background-color-success;
+}

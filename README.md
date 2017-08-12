@@ -1,2 +1,3 @@
 # notifications-plus-confetti
-Notifications+ confetti on new notification
+
+Add confetti to the new notification animation for notifications-plus

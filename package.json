@@ -1,0 +1,19 @@
+{
+  "name": "notifications-plus-confetti",
+  "main": "./src/notifications-plus-confetti.js",
+  "version": "0.0.0",
+  "description": "Notifications+ confetti on new notification",
+  "repository": "https://github.com/UziTech/notifications-plus-confetti",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "configSchema": {
+    "numberOfConfetti": {
+      "type": "integer",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 100
+    }
+  }
+}
