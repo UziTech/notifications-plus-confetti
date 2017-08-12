@@ -79,7 +79,7 @@ export default {
 				const left = Math.random() < 0.5;
 				const moveX = Math.random() * 90 + 10;
 				const moveY = Math.random() * 30 - 15;
-				const rotate = Math.random() * 720 - 360;
+				const rotate = Math.random() * 3600 - 1800;
 
 				if (left) {
 					confetto.style.right = "100%";
