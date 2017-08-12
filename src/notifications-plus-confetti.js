@@ -63,7 +63,6 @@ export default {
 			this.notificationCountNumber = this.notificationCount.querySelector("div");
 			for (let i = 0; i < this.numberOfConfetti; i++) {
 				const confetto = document.createElement("i");
-				confetto.dataset.left = (i < this.numberOfConfetti / 2 ? "1" : "");
 				this.confetti.push(confetto);
 				this.notificationCount.appendChild(confetto);
 			}
@@ -77,16 +76,17 @@ export default {
 	animationstart(e) {
 		if (e.animationName === "new-notification") {
 			this.confetti.forEach(confetto => {
-				const moveH = Math.random() * 90 + 10;
-				const moveV = Math.random() * 30 - 15;
+				const left = Math.random() < 0.5;
+				const moveX = Math.random() * 90 + 10;
+				const moveY = Math.random() * 30 - 15;
 				const rotate = Math.random() * 720 - 360;
 
-				if (confetto.dataset.left) {
+				if (left) {
 					confetto.style.right = "100%";
-					confetto.style.transform = `translate3d(-${moveH}px, ${moveV}px, 0) rotate(${rotate}deg)`;
+					confetto.style.transform = `translate3d(-${moveX}px, ${moveY}px, 0) rotate(${rotate}deg)`;
 				} else {
 					confetto.style.left = "100%";
-					confetto.style.transform = `translate3d(${moveH}px, ${moveV}px, 0) rotate(${rotate}deg)`;
+					confetto.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) rotate(${rotate}deg)`;
 				}
 				confetto.style.display = "block";
 			});
