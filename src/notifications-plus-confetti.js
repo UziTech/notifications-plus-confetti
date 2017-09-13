@@ -58,7 +58,7 @@ export default {
 
 	addConfetti() {
 		this.removeConfetti();
-		this.notificationCount = document.querySelector(".notifications-count");
+		this.notificationCount = document.querySelector(".notifications-count span");
 		if (this.notificationCount) {
 			this.notificationCountNumber = this.notificationCount.querySelector("div");
 			for (let i = 0; i < this.numberOfConfetti; i++) {
