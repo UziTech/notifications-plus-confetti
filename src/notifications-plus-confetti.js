@@ -6,9 +6,10 @@ export default {
 	activate() {
 		this.disposables = new CompositeDisposable();
 		this.confetti = [];
-		this.notificationCount = null;
+		this.notificationCountBadge = null;
 		this.notificationCountNumber = null;
 		this.numberOfConfetti = 0;
+		this.timeout = null;
 
 		this.addConfetti = this.addConfetti.bind(this);
 		this.removeConfetti = this.removeConfetti.bind(this);
@@ -40,6 +41,7 @@ export default {
 	},
 
 	deactivate() {
+		clearTimeout(this.timeout);
 		this.removeConfetti();
 		this.disposables.dispose();
 		this.disposables = null;
@@ -58,18 +60,18 @@ export default {
 
 	addConfetti() {
 		this.removeConfetti();
-		this.notificationCount = document.querySelector(".notifications-count span");
-		if (this.notificationCount) {
-			this.notificationCountNumber = this.notificationCount.querySelector("div");
+		this.notificationCountBadge = document.querySelector(".notifications-count .notifications-count-badge");
+		if (this.notificationCountBadge) {
+			this.notificationCountNumber = document.querySelector(".notifications-count .notifications-count-number");
 			for (let i = 0; i < this.numberOfConfetti; i++) {
 				const confetto = document.createElement("i");
 				this.confetti.push(confetto);
-				this.notificationCount.appendChild(confetto);
+				this.notificationCountBadge.appendChild(confetto);
 			}
 			this.notificationCountNumber.addEventListener("animationstart", this.animationstart, false);
 			this.notificationCountNumber.addEventListener("animationend", this.animationend, false);
 		} else if (atom.packages.getActivePackage("notifications-plus")) {
-			setTimeout(this.addConfetti, 1000);
+			this.timeout = setTimeout(this.addConfetti, 1000);
 		}
 	},
 
