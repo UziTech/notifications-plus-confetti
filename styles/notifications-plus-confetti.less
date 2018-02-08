@@ -1,12 +1,6 @@
 @import "ui-variables";
 
 // Notifications count confetti
-@keyframes new-notification-confetti {
-  from {
-    transform: translate3d(0,0,0) rotate(0);
-    opacity: 1;
-  }
-}
 .notifications-count {
   overflow: visible !important;
 
@@ -21,10 +15,6 @@
       height: 6px;
       background: @text-color;
       opacity: 0;
-    }
-
-    .new-notification ~ .confetto {
-      animation: new-notification-confetti 500ms ease-out;
     }
   }
 }

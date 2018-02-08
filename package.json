@@ -7,13 +7,5 @@
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
-  },
-  "configSchema": {
-    "numberOfConfetti": {
-      "type": "integer",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 100
-    }
   }
 }
