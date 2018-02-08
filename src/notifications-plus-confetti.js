@@ -47,6 +47,13 @@ export default {
 			minimum: 0,
 			order: 5,
 		},
+		animationEasing: {
+			title: "Animation Easing",
+			type: "string",
+			default: "ease-out",
+			enum: ["linear", "ease", "ease-in", "ease-out", "ease-in-out"],
+			order: 6,
+		},
 	},
 
 	activate() {
@@ -63,6 +70,7 @@ export default {
 		this.sprayHeight = this.config.sprayHeight.default;
 		this.maxSpin = this.config.maxSpin.default;
 		this.animationDuration = this.config.animationDuration.default;
+		this.animationEasing = this.config.animationEasing.default;
 
 		this.addConfetti = this.addConfetti.bind(this);
 		this.removeConfetti = this.removeConfetti.bind(this);
@@ -100,6 +108,10 @@ export default {
 
 		this.disposables.add(atom.config.observe("notifications-plus-confetti.animationDuration", value => {
 			this.animationDuration = value;
+		}));
+
+		this.disposables.add(atom.config.observe("notifications-plus-confetti.animationEasing", value => {
+			this.animationEasing = value;
 		}));
 
 		this.disposables.add(atom.packages.onDidActivatePackage(pkg => {
@@ -186,7 +198,7 @@ export default {
 					},
 				], {
 					duration: this.animationDuration,
-					easing: "ease-out",
+					easing: this.animationEasing,
 				});
 			});
 			Promise.all(this.animations.map(a => a.finished)).then(
