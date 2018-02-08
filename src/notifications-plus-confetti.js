@@ -54,6 +54,13 @@ export default {
 			enum: ["linear", "ease", "ease-in", "ease-out", "ease-in-out"],
 			order: 6,
 		},
+		timingFunction: {
+			title: "CSS Timing Function (e.g. 'cubic-bezier(x1, y1, x2, y2)')",
+			description: "This overrides Animation Easing (https://developer.mozilla.org/en-US/docs/Web/CSS/single-transition-timing-function)",
+			type: "string",
+			default: "",
+			order: 7,
+		},
 	},
 
 	activate() {
@@ -71,6 +78,7 @@ export default {
 		this.maxSpin = this.config.maxSpin.default;
 		this.animationDuration = this.config.animationDuration.default;
 		this.animationEasing = this.config.animationEasing.default;
+		this.timingFunction = this.config.timingFunction.default;
 
 		this.addConfetti = this.addConfetti.bind(this);
 		this.removeConfetti = this.removeConfetti.bind(this);
@@ -112,6 +120,10 @@ export default {
 
 		this.disposables.add(atom.config.observe("notifications-plus-confetti.animationEasing", value => {
 			this.animationEasing = value;
+		}));
+
+		this.disposables.add(atom.config.observe("notifications-plus-confetti.timingFunction", value => {
+			this.timingFunction = value;
 		}));
 
 		this.disposables.add(atom.packages.onDidActivatePackage(pkg => {
@@ -198,7 +210,7 @@ export default {
 					},
 				], {
 					duration: this.animationDuration,
-					easing: this.animationEasing,
+					easing: (this.timingFunction ? this.timingFunction : this.animationEasing),
 				});
 			});
 			Promise.all(this.animations.map(a => a.finished)).then(
