@@ -9,9 +9,11 @@
 }
 .notifications-count {
   overflow: visible !important;
-  span {
+
+  .notifications-count-badge {
     position: relative;
-    i {
+
+    .confetto {
       position: absolute;
       display: none;
       top: calc(50% ~"-" 3px);
@@ -20,23 +22,24 @@
       background: @text-color;
       opacity: 0;
     }
-    .new-notification ~ i {
+
+    .new-notification ~ .confetto {
       animation: new-notification-confetti 500ms ease-out;
     }
   }
 }
-.notifications-count[last-type='fatal'] span i {
+.notifications-count[last-type='fatal'] .notifications-count-badge .confetto {
 	background: @background-color-error;
 }
-.notifications-count[last-type='error'] span i {
+.notifications-count[last-type='error'] .notifications-count-badge .confetto {
 	background: @background-color-error;
 }
-.notifications-count[last-type='warning'] span i {
+.notifications-count[last-type='warning'] .notifications-count-badge .confetto {
 	background: @background-color-warning;
 }
-.notifications-count[last-type='info'] span i {
+.notifications-count[last-type='info'] .notifications-count-badge .confetto {
 	background: @background-color-info;
 }
-.notifications-count[last-type='success'] span i {
+.notifications-count[last-type='success'] .notifications-count-badge .confetto {
 	background: @background-color-success;
 }
